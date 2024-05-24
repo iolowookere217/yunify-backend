@@ -1,7 +1,7 @@
 // index.js or app.js
 import express from 'express';
 import cors from 'cors';
-//const routes = require('./route/routes');
+import routes from './route/routes.js';
 
 const app = express();
 
@@ -11,7 +11,7 @@ app.use(cors());
 
 const port = 8080;
 
-//app.use('/', routes); // Mount the routes
+app.use('/', routes); // Mount the routes
 
 try {
     app.listen(port, () => {
