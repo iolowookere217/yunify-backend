@@ -1,7 +1,8 @@
-import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import db from "../firestore.js";
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+
 
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
 const auth = getAuth();
@@ -10,11 +11,12 @@ const auth = getAuth();
 export async function  registerUser(req, res){
 
     try {
-        const {email, password} = req.body;
+        const { password, ...userData} = req.body;
         
 
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(auth, userData.email, password);
         const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), userData);
 
         //user id
         console.log('User signed up successfully:', user.uid);
@@ -67,4 +69,7 @@ export async function loginUser(req, res){
     }
 
 };
+
+// Get user profile
+
 
