@@ -1,5 +1,7 @@
-import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore"
-import db from "../firestore.js"
+import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
+import db from "../firestore.js";
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
 const auth = getAuth();
@@ -42,10 +44,17 @@ export async function loginUser(req, res){
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        //user id
-        console.log('User signed up successfully:', user.uid);
+        // Create a JWT token
+        const token = jwt.sign(
+            {
+                userId: user.uid
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "24h" }
+        );
        
-        return res.status(200).send({ msg: "User logged in successfully"});
+        return res.status(200).send({ msg: "User logged in successfully", email,
+        token});
         
         
     } catch (error) {
@@ -55,32 +64,6 @@ export async function loginUser(req, res){
         // Handle signup errors here (e.g., display error messages to the user)
         console.error('Login error:', errorCode, errorMessage);
         return res.status(500).send({ error: "Login failed" });
-    }
-
-};
-
-// user log out
-export async function logoutUser(req, res){
-
-    try {
-        const {email, password} = req.body;
-    
-        const userCredential = await signOut(auth);
-        const user = userCredential.user;
-
-        //user id
-        console.log('User signed up successfully:', user.uid);
-       
-        return res.status(200).send({ msg: "User logged out successfully"});
-        
-        
-    } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    
-        // Handle signup errors here (e.g., display error messages to the user)
-        console.error('Login error:', errorCode, errorMessage);
-        return res.status(500).send({ error: "LogOut failed" });
     }
 
 };
