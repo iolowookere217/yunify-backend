@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, collectionGroup, addDoc, doc, setDoc, updateDoc, getDoc, getDocs, query, where  } from "firebase/firestore";
 import db from "../firestore.js";
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
@@ -10,9 +10,15 @@ const auth = getAuth();
 
 // Register user
 export async function  registerUser(req, res){
-
     try {
         const { password, ...userData} = req.body;
+
+        //check if user email exists
+        const q = query(collection(db, "users"), where("email", "==", userData.email));     
+        const userSnapshot = await getDocs(q);
+        if(userSnapshot){
+            return res.status(400).send({ msg: "Email already exists"});
+        }
 
         const userCredential = await createUserWithEmailAndPassword(auth, userData.email, password);
         const user = userCredential.user;
