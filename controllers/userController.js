@@ -71,5 +71,21 @@ export async function loginUser(req, res){
 };
 
 // Get user profile
+export async function getUser(req, res){
+    try {
+        const userRef = doc(db, "users", "FNCkwscahzfjnWv4t6PWQBn67sh2");
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            return res.status(200).send(userSnap.data());
+        } else {
+            return res.status(404).send({ error: "User not found" });
+        }
+        
+        
+    } catch (error) {
+        return res.status(500).send({ error: "Retrieving user details failed" });
+    }  
+}
 
 
