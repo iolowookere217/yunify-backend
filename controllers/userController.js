@@ -7,12 +7,12 @@ import 'dotenv/config';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
 const auth = getAuth();
 
+
 // Register user
 export async function  registerUser(req, res){
 
     try {
         const { password, ...userData} = req.body;
-        
 
         const userCredential = await createUserWithEmailAndPassword(auth, userData.email, password);
         const user = userCredential.user;
@@ -73,7 +73,10 @@ export async function loginUser(req, res){
 // Get user profile
 export async function getUser(req, res){
     try {
-        const userRef = doc(db, "users", "FNCkwscahzfjnWv4t6PWQBn67sh2");
+        // Get user data and id
+        const {userId} = req.user;
+        const userRef = doc(db, "users", userId);
+
         const userSnap = await getDoc(userRef);
 
         // User exists
@@ -92,8 +95,12 @@ export async function getUser(req, res){
 // Update user profile
 export async function updateUser(req, res){
     try {
+
+        // Get user data and id 
         const userData = req.body;
-        const userRef = doc(db, "users", "FNCkwscahzfjnWv4t6PWQBn67sh2");
+        const {userId} = req.user;
+        
+        const userRef = doc(db, "users", userId);
         
         await updateDoc(userRef, 
                 userData);
