@@ -76,6 +76,7 @@ export async function getUser(req, res){
         const userRef = doc(db, "users", "FNCkwscahzfjnWv4t6PWQBn67sh2");
         const userSnap = await getDoc(userRef);
 
+        // User exists
         if (userSnap.exists()) {
             return res.status(200).send(userSnap.data());
         } else {
@@ -86,6 +87,21 @@ export async function getUser(req, res){
     } catch (error) {
         return res.status(500).send({ error: "Retrieving user details failed" });
     }  
+}
+
+// Update user profile
+export async function updateUser(req, res){
+    try {
+        const userData = req.body;
+        const userRef = doc(db, "users", "FNCkwscahzfjnWv4t6PWQBn67sh2");
+        
+        await updateDoc(userRef, 
+                userData);
+        return res.status(200).send({ msg: "User Info updated successfully", userData  });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ error: "User update failed" });
+    }
 }
 
 
