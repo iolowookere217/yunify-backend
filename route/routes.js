@@ -18,7 +18,7 @@ router.post("/users/register", registerUser);
 router.post("/users/login", loginUser);
 router.get("/users/profile", Auth, getUser);
 router.put("/users/update", Auth, updateUser);
-router.post("/videos/upload", Auth, upload.single('video'), uploadVideo);
+router.post("/videos/upload", Auth, upload.fields([{ name: 'video' }, { name: 'thumbnail' }]), uploadVideo);
 
 
 export default router;
