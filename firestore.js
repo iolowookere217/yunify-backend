@@ -1,6 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
+
 import 'dotenv/config';
+
+
 
 // yunify web app's Firebase configuration
 const firebaseConfig = {
@@ -16,5 +20,8 @@ const firebaseConfig = {
 // Initialize Firebase and firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// Get the default bucket
+const storage  = getStorage(app);
 
 export default db; // Exporting the Firestore instance
+export { db, storage };
