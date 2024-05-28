@@ -122,8 +122,11 @@ export async function getVideosMetadata(req, res){
         id: doc.id,
         ...doc.data(),
       }));
-
-      res.status(200).send(videoData);
+      
+      res.status(200).send({
+        count: videoData.length,
+        data: videoData,
+      });
       
     } catch (error) {
       res.status(500).send({error:"Videos retireval failed"});
