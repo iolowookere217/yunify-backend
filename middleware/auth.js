@@ -6,12 +6,17 @@ export default async function Auth(req, res, next){
     try {
         // Access the authorization header to validate the request
         const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (!authHeader) {
           return res.status(401).json({ error: "Authentication Failed" });
         }
-      
+
+        let token = authHeader;
+
         // Extract the token from the authorization header
-        const token = authHeader.split(" ")[1];
+        if(authHeader.startsWith("Bearer ")){
+            token = authHeader.split(" ")[1];
+        }
+        console.log(token);
       
         // Retrieve the user details for the logged-in user
         const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
