@@ -34,11 +34,6 @@ export async function  registerUser(req, res){
         
         
     } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    
-        // Handle signup errors here (e.g., display error messages to the user)
-        console.error('Signup error:', errorCode, errorMessage);
         return res.status(500).send({ error: "User not created" });
     }
 };
