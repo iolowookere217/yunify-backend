@@ -39,7 +39,8 @@ export async function uploadVideo(req, res) {
       // **Video Upload**
   
       // Upload video
-      const videoStorageRef = ref(storage, 'videos/' + uploadedVideo[0].originalname);
+      const videoPath = 'videos/' + uploadedVideo[0].originalname;
+      const videoStorageRef = ref(storage, videoPath);
       const uploadVideoTask = uploadBytesResumable(videoStorageRef, uploadedVideo[0].buffer);
   
       // Handle progress and errors during video upload
@@ -63,7 +64,8 @@ export async function uploadVideo(req, res) {
       // **Thumbnail Upload**
   
       // Upload thumbnail
-      const thumbnailStorageRef = ref(storage, 'thumbnails/' + uploadedThumbnail[0].originalname);
+      const thumbnailPath = 'thumbnails/' + uploadedThumbnail[0].originalname
+      const thumbnailStorageRef = ref(storage, thumbnailPath);
       const uploadthumbnailTask = uploadBytesResumable(thumbnailStorageRef, uploadedThumbnail[0].buffer);
   
       // Handle progress and errors during thumbnail upload
@@ -93,8 +95,10 @@ export async function uploadVideo(req, res) {
         subject: req.body.subject,
         description: req.body.description,
         creator: req.body.creator,
-        videoPath: videodownloadURL,
-        thumbnailPath: thumbnaildownloadURL,
+        videoPath: videoPath,
+        thumbnailPath: thumbnailPath,
+        videoURL: videodownloadURL,
+        thumbnailURL: thumbnaildownloadURL,
         creator: userId,
         uploadDate: new Date(),
       };
@@ -131,10 +135,6 @@ export async function getVideosMetadata(req, res){
     } catch (error) {
       res.status(500).send({error:"Videos retireval failed"});
     }
-
-
-
-
 }
 
 // Delete a video 
