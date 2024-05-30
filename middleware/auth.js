@@ -16,7 +16,6 @@ export default async function Auth(req, res, next){
         if(authHeader.startsWith("Bearer ")){
             token = authHeader.split(" ")[1];
         }
-        console.log(token);
       
         // Retrieve the user details for the logged-in user
         const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
