@@ -283,7 +283,7 @@ try {
  *       type: string
  *       required: false
  *       example: {
- *               "videoMetadata": "Navy"
+ *               "videoMetadataID": ""
  *               }
  *     responses:
  *       201:
