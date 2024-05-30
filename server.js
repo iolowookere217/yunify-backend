@@ -174,7 +174,7 @@ try {
  *     tags:
  *     - Video APIs
  *     summary: Get all video details
- *     description: Video Metadata
+ *     description: All Videos Metadata
  *     responses:
  *       200:
  *         description: Success
@@ -241,6 +241,30 @@ try {
  *         description: Video uploaded successfully
  *       500:
  *         description: Internal server error
+ */
+
+//Get user videos
+/**
+ * @swagger
+ * /videos/user:
+ *   get:
+ *     tags:
+ *     - Video APIs
+ *     summary: Get videos uplaoded by user
+ *     description: User Videos
+ *     security:
+ *     - bearerAuth: []
+ *     parameters:
+ *     - name: Authorization
+ *       in: header
+ *       type: string
+ *       required: true
+ *       description: Bearer token for authentication
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: User not found
  */
 
 //Delete a video
