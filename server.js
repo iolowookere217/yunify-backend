@@ -182,6 +182,7 @@ try {
  *         description: User not found
  */
 
+//Upload a video
 /**
  * @swagger
  * /videos/upload:
@@ -238,6 +239,33 @@ try {
  *     responses:
  *       201:
  *         description: Video uploaded successfully
+ *       500:
+ *         description: Internal server error
+ */
+
+//Delete a video
+/**
+ * @swagger
+ * /videos/delete:
+ *   post:
+ *     tags:
+ *       - Video APIs
+ *     summary: Delete a video
+ *     description: user removing their video
+ *     parameters:
+ *     - name: Video metadata ID
+ *       description: ID of video meta data
+ *       in: body
+ *       type: string
+ *       required: false
+ *       example: {
+ *               "videoMetadata": "Navy"
+ *               }
+ *     responses:
+ *       201:
+ *         description: Video uploaded successfully
+ *       400:
+ *         description: Missing video metadata ID
  *       500:
  *         description: Internal server error
  */
