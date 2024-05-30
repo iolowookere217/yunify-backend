@@ -1,6 +1,6 @@
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage"
 import { storage } from "../firestore.js";
-import { doc, collection, addDoc, getDocs, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, collection, addDoc, getDocs, getDoc, deleteDoc, query, where } from "firebase/firestore";
 import db from "../firestore.js";
 
 // generate date  for unique filenames
@@ -133,6 +133,37 @@ export async function getVideosMetadata(req, res){
     } catch (error) {
       res.status(500).send({error:"Videos retireval failed"});
     }
+}
+
+// Retrieve all user's video metadata
+export async function getUserVideosMetadata(req, res){
+  try {
+
+      const { userId } = req.user;
+      
+      // query to filter by creator (userId)
+      const q = query(collection(db, "videos_metadata"), where("creator", "==", userId));
+
+      // Get matching videos
+      const querySnapshot = await getDocs(q);
+
+      // Extract data and IDs in a single step using destructuring and map
+      const videoData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      
+      res.status(200).send({
+        msg : "User Videos retrieved Successfully",
+        count: videoData.length,
+        data: videoData,
+      });
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({error:"Videos retireval failed"});
+  }
+
 }
 
 // Delete a video 
