@@ -75,7 +75,7 @@ try {
  *          "department" : "Marine Engineering"
  *         }
  *      responses:
- *        201:
+ *        200:
  *          description: User Registered successfully
  *        400:
  *          description: Email already in use 
@@ -103,7 +103,7 @@ try {
  *          "password" : "#itworks"
  *         }
  *      responses:
- *        201:
+ *        200:
  *          description: Success
  *        404:
  *          description: User not found
@@ -129,6 +129,10 @@ try {
  *     responses:
  *       200:
  *         description: Success
+ *       401:
+ *         description: Missing user token
+ *       402:
+ *         description: User Authentication Failed
  *       404:
  *         description: User not found
  */
@@ -161,6 +165,10 @@ try {
  *      responses:
  *        201:
  *          description: Success
+ *        401:
+ *          description: Missing user token
+ *        402:
+ *          description: User Authentication Failed
  *        500:
  *          description: User update failed
  * 
@@ -210,7 +218,7 @@ try {
  *         name: thumbnail
  *         type: file
  *         required: true
- *         description: The thumbnail image file to upload (optional)
+ *         description: The thumbnail image file to upload
  *       - in: formData
  *         name: title
  *         type: string
@@ -239,6 +247,10 @@ try {
  *     responses:
  *       201:
  *         description: Video uploaded successfully
+ *       401:
+ *         description: Missing user token
+ *       402:
+ *         description: User Authentication Failed
  *       500:
  *         description: Internal server error
  */
@@ -263,6 +275,10 @@ try {
  *     responses:
  *       200:
  *         description: Success
+ *       401:
+ *         description: Missing user token
+ *       402:
+ *         description: User Authentication Failed
  *       404:
  *         description: User not found
  */
@@ -290,6 +306,10 @@ try {
  *         description: Video uploaded successfully
  *       400:
  *         description: Missing video metadata ID
+ *       401:
+ *         description: Missing user token
+ *       402:
+ *         description: User Authentication Failed
  *       500:
  *         description: Internal server error
  */
