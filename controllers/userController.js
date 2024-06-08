@@ -16,7 +16,7 @@ export async function  registerUser(req, res){
         //check if user email exists
         const q = query(collection(db, "users"), where("email", "==", userData.email));     
         const userSnapshot = await getDocs(q);
-        if(userSnapshot){
+        if(!userSnapshot.empty){
             return res.status(400).send({ msg: "Email already exists"});
         }
 
