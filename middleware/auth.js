@@ -7,7 +7,7 @@ export default async function Auth(req, res, next){
         // Access the authorization header to validate the request
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-          return res.status(401).json({ error: "Authentication Failed" });
+          return res.status(401).json({ error: "Missing user token" });
         }
 
         let token = authHeader;
@@ -24,7 +24,7 @@ export default async function Auth(req, res, next){
       
         next()
       } catch (error) {
-        res.status(500).json({ error: "User Authentication Failed" });
+        res.status(402).json({ error: "User Authentication Failed" });
       }
       
 }
