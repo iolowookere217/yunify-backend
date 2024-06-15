@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from "multer";
-import {registerUser, loginUser, getUser, updateUser} from '../controllers/userController.js'
+import {registerUser, loginUser, getUser, updateUser, logoutUser} from '../controllers/userController.js'
 import {uploadVideo, getVideosMetadata, deleteVideo, getUserVideosMetadata} from '../controllers/assetController.js';
 import Auth from '../middleware/auth.js';
 
@@ -18,6 +18,7 @@ router.post("/users/register", registerUser);
 router.post("/users/login", loginUser);
 router.get("/users/profile", Auth, getUser);
 router.put("/users/update", Auth, updateUser);
+router.post("/users/logout", logoutUser);
 
 //Asset routes
 router.post("/videos/upload", Auth, upload.fields([{ name: 'video' }, { name: 'thumbnail' }]), uploadVideo);
