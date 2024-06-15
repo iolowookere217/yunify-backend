@@ -4,8 +4,10 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 const auth = getAuth();
+
+
 
 
 // Register user
@@ -22,7 +24,9 @@ export async function  registerUser(req, res){
 
         const userCredential = await createUserWithEmailAndPassword(auth, userData.email, password);
         const user = userCredential.user;
+        
         await setDoc(doc(db, "users", user.uid), userData);
+
 
         //user id
         console.log('User signed up successfully:', user.uid);
@@ -50,22 +54,15 @@ export async function loginUser(req, res){
         // Create a JWT token
         const token = jwt.sign(
             {
-                userId: user.uid
+                userId: user.uid,
             },
             process.env.JWT_SECRET,
             { expiresIn: "24h" }
         );
-       
-        return res.status(200).send({ msg: "User logged in successfully", email,
-        token});
+        return res.status(200).send({ msg: "User logged in successfully", accessToken: token, fullname: user.displayName});
         
         
     } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    
-        // Handle signup errors here (e.g., display error messages to the user)
-        console.error('Login error:', errorCode, errorMessage);
         return res.status(500).send({ error: "Login failed" });
     }
 
@@ -75,6 +72,7 @@ export async function loginUser(req, res){
 export async function getUser(req, res){
     try {
         // Get user data and id
+
         const {userId} = req.user;
         const userRef = doc(db, "users", userId);
 
@@ -96,16 +94,25 @@ export async function getUser(req, res){
 // Update user profile
 export async function updateUser(req, res){
     try {
+        
 
         // Get user data and id 
         const userData = req.body;
         const {userId} = req.user;
         
         const userRef = doc(db, "users", userId);
+
+        // update displayName 
+        if (userData.hasOwnProperty('name')) {
+            const user = auth.currentUser;
+            await updateProfile(user, { displayName: userData.name });
+          } 
         
-        await updateDoc(userRef, 
-                userData);
-        return res.status(200).send({ msg: "User Info updated successfully", userData  });
+        // updating user profile in firestore
+        await updateDoc(userRef, userData);
+
+        return res.status(200).send({ msg: "User Info updated successfully", user });
+        
     } catch (error) {
         console.log(error);
         return res.status(500).send({ error: "User update failed" });
@@ -113,3 +120,12 @@ export async function updateUser(req, res){
 }
 
 
+// User logout
+export async function logoutUser(req, res) {
+    try {
+  
+        return res.status(200).send({ msg: " User logged out successfully"});
+    } catch (error) {
+      return res.status(500).send({ error: "Logout failed" });
+    }
+  }
