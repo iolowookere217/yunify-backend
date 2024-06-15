@@ -173,6 +173,21 @@ try {
  *          description: User update failed
  * 
  */
+// user login
+/**
+ * @swagger 
+ * /users/logout:
+ *    post:
+ *      tags:
+ *      - User APIs
+ *      summary: Logout as user
+ *      responses:
+ *        200:
+ *          description: Success
+ *        500:
+ *          description: Internal error
+ * 
+ */
 /* VIDEOS API */
 //Get user details
 /**
